@@ -1,0 +1,721 @@
+<!-- 
+# Taskify
+
+- Create a Task Management Application with drag-drop functionality between the category.
+
+- you can avoid time, and type of TODO (easy, medium, hard).
+
+
+- The UI should resemble the example shown below..
+
+![Image](https://utfs.io/f/c63f4dc5-6833-4c65-9b07-e1421d833ee2-ng18dw.png)
+
+
+
+### Don't copy UI as it is, only take reference from it.
+
+
+ -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taskify</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        main {
+            height: 100vh;
+            width: 100vw;
+            background-color: rgb(226, 226, 226);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .card {
+            width: 440px;
+            height: 850px;
+            border: 1px solid black;
+            border-radius: 8px;
+            background-color: rgb(255, 213, 213);
+            box-shadow: 1px 2px 5px 1px #000000;
+        }
+
+        .todoProcess {
+            margin: 10px auto;
+            text-indent: 15px;
+        }
+
+        .todoCard {
+            width: 440px;
+            height: 737px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .actualTodosHere {
+            width: 370px;
+            height: 200px;
+            border: 2px solid black;
+            border-radius: 10px;
+            margin: 10px 0px;
+            background-color: #f0ffe2;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            cursor: grab;
+        }
+
+        .todoTitle {
+            width: 370px;
+            height: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0px 0px 10px;
+        }
+
+        .editImg {
+            width: 33px;
+            margin: 0px 45px 0px 0px;
+            cursor: pointer;
+            transition: all 0.3s;
+
+        }
+
+        .editImg:hover {
+            scale: 1.1;
+        }
+
+        .todoDescription {
+            width: 295px;
+            height: 95px;
+            font-size: large;
+            overflow: auto;
+            margin: 0px 0px 0px 10px;
+        }
+
+        .todoOther {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 10px 0px 10px 0px;
+        }
+
+
+
+        .choice {
+            outline: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            width: 90px;
+            border: 2px solid;
+            border-radius: 20px;
+            text-align: center;
+            /* background-color: #ffc580; */
+            font-weight: 700;
+        }
+
+        .choice.low {
+            background-color: #00ff00;
+            /* Green */
+            color: #000;
+            transition: all 0.5s;
+        }
+
+        .choice.medium {
+            background-color: #ffff00;
+            /* Yellow */
+            color: #000;
+            transition: all 0.5s;
+        }
+
+        .choice.urgent {
+            background-color: #ff0000;
+            /* Red */
+            color: #fff;
+            transition: all 0.5s;
+        }
+
+        .choice:hover {
+            cursor: pointer;
+        }
+
+        .choice:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .options {
+            font-weight: 600;
+        }
+
+        .todoDelete {
+            cursor: pointer;
+            height: 50px;
+            transition: all 0.3s;
+        }
+
+        .todoDelete:hover {
+            scale: 1.1;
+        }
+
+        .todoTime {
+            font-weight: 600;
+        }
+
+        .newTodoButton {
+            height: 40px;
+            width: auto;
+            border: 1px solid black;
+            border-radius: 7px;
+            background-color: #c6ffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            cursor: pointer;
+            text-indent: 10px;
+            transition: all 0.1s;
+            margin: 15px 5px 0px 5px;
+
+        }
+
+        .newTodoButton:hover {
+            background-color: #80ffff;
+        }
+
+        .newTodoButton img {
+            height: 65%;
+            margin: 0px 10px 0px 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="card">
+            <div class="todoProcess">
+                <h2>New Todo</h2>
+            </div>
+            <div class="todoCard" id="box-1">
+                <div class="actualTodosHere" draggable="true">
+                    <div class="todoTitle">
+                        <h2>Go To Gym</h2>
+
+                        <img class="editImg" src="https://img.icons8.com/?size=64&id=Xi-_sGLJ-4fL&format=png"
+                            alt="edit Image">
+
+                    </div>
+                    <div class="todoDescription">Go to Gym at 8:00 AM & After That you Have to Study</div>
+                    <div class="todoOther">
+
+                        <select class="choice" name="choice">
+                            <option class="options" value="Low">Low</option>
+                            <option class="options" value="Medium">Medium</option>
+                            <option class="options" value="Urgent">Urgent</option>
+                        </select>
+
+                        <div class="todoTime">1 hour ago</div>
+                        <img class="todoDelete" src="https://img.icons8.com/?size=256&id=102350&format=png"
+                            alt="delete Image">
+
+                    </div>
+                </div>
+            </div>
+            <div class="newTodoButton">Add New Todo <img class="plusIcon" src="plusIcon.svg"></div>
+        </div>
+
+
+
+        <div class="card">
+            <div class="todoProcess">
+                <h2>In Progress</h2>
+            </div>
+            <div class="todoCard" id="box-2">
+                <div class="actualTodosHere" draggable="true">
+                    <div class="todoTitle">
+                        <h2>Study</h2>
+
+                        <img class="editImg" src="https://img.icons8.com/?size=64&id=Xi-_sGLJ-4fL&format=png"
+                            alt="edit Image">
+
+                    </div>
+                    <div class="todoDescription">Study At 10:00 AM For 3 Hours</div>
+                    <div class="todoOther">
+
+                        <select class="choice" name="choice">
+                            <option class="options" value="Low">Low</option>
+                            <option class="options" value="Medium" selected>Medium</option>
+                            <option class="options" value="Urgent">Urgent</option>
+                        </select>
+
+                        <div class="todoTime">5 Minutes ago</div>
+                        <img class="todoDelete" src="https://img.icons8.com/?size=256&id=102350&format=png"
+                            alt="delete Image">
+
+                    </div>
+                </div>
+            </div>
+            <div class="newTodoButton">Add New Todo <img class="plusIcon" src="plusIcon.svg"></div>
+        </div>
+
+
+
+        <div class="card">
+            <div class="todoProcess">
+                <h2>Under Review</h2>
+            </div>
+            <div class="todoCard" id="box-3">
+                <div class="actualTodosHere" draggable="true">
+                    <div class="todoTitle">
+                        <h2>College Attendance</h2>
+
+                        <img class="editImg" src="https://img.icons8.com/?size=64&id=Xi-_sGLJ-4fL&format=png"
+                            alt="edit Image">
+
+                    </div>
+                    <div class="todoDescription">Maintain Attendance of the College till 1st Unit Test</div>
+                    <div class="todoOther">
+
+                        <select class="choice" name="choice">
+                            <option class="options" value="Low">Low</option>
+                            <option class="options" value="Medium">Medium</option>
+                            <option class="options" value="Urgent">Urgent</option>
+                        </select>
+
+                        <div class="todoTime">1 hour ago</div>
+                        <img class="todoDelete" src="https://img.icons8.com/?size=256&id=102350&format=png"
+                            alt="delete Image">
+
+                    </div>
+                </div>
+
+
+                <div class="actualTodosHere" draggable="true">
+                    <div class="todoTitle">
+                        <h2>College Work</h2>
+
+                        <img class="editImg" src="https://img.icons8.com/?size=64&id=Xi-_sGLJ-4fL&format=png"
+                            alt="edit Image">
+
+                    </div>
+                    <div class="todoDescription">Do College Work till 2nd Unit Test</div>
+                    <div class="todoOther">
+
+                        <select class="choice" name="choice">
+                            <option class="options" value="Low">Low</option>
+                            <option class="options" value="Medium">Medium</option>
+                            <option class="options" value="Urgent">Urgent</option>
+                        </select>
+
+                        <div class="todoTime">2 hour ago</div>
+                        <img class="todoDelete" src="https://img.icons8.com/?size=256&id=102350&format=png"
+                            alt="delete Image">
+
+                    </div>
+                </div>
+
+                
+            </div>
+            <div class="newTodoButton">Add New Todo <img class="plusIcon" src="plusIcon.svg"></div>
+        </div>
+
+
+
+        <div class="card">
+            <div class="todoProcess">
+                <h2>Finished</h2>
+            </div>
+            <div class="todoCard" id="box-4">
+                <div class="actualTodosHere" draggable="true">
+                    <div class="todoTitle">
+                        <h2>Code Taskify</h2>
+
+                        <img class="editImg" src="https://img.icons8.com/?size=64&id=Xi-_sGLJ-4fL&format=png"
+                            alt="edit Image">
+
+                    </div>
+                    <div class="todoDescription">You Have to Make Taskify with drag-drop functionality, Which is Task Management System in 10 Days</div>
+                    <div class="todoOther">
+
+                        <select class="choice" name="choice">
+                            <option class="options" value="Low">Low</option>
+                            <option class="options" value="Medium">Medium</option>
+                            <option class="options" value="Urgent" selected>Urgent</option>
+                        </select>
+
+                        <div class="todoTime">1 Day ago</div>
+                        <img class="todoDelete" src="https://img.icons8.com/?size=256&id=102350&format=png"
+                            alt="delete Image">
+
+                    </div>
+                </div>
+            </div>
+            <div class="newTodoButton">Add New Todo <img class="plusIcon" src="plusIcon.svg"></div>
+        </div>
+
+
+
+
+
+    </main>
+
+
+    <script>
+        document.querySelectorAll(".newTodoButton").forEach((e) => {
+
+        e.addEventListener("click", () => {
+            let title = prompt("add Todo Title");
+            let description = prompt("add Todo Description");
+
+            if (title == "" || description == "") {
+                alert("Please Provide Title & Description Strictly");
+            }
+            else {
+
+
+                let actualTodosHere = document.createElement("div");
+                actualTodosHere.setAttribute("class", "actualTodosHere");
+                actualTodosHere.setAttribute("draggable", "true");
+
+                let todoTitle = document.createElement("div");
+                todoTitle.setAttribute("class", "todoTitle");
+
+                let h2Title = document.createElement("h2");
+                h2Title.innerHTML = title;
+
+                let editImg = document.createElement("img");
+                editImg.setAttribute("class", "editImg");
+                editImg.setAttribute("src", "https://img.icons8.com/?size=64&id=Xi-_sGLJ-4fL&format=png");
+                editImg.setAttribute("alt", "edit Image");
+
+                let todoDescription = document.createElement("div");
+                todoDescription.setAttribute("class", "todoDescription");
+                todoDescription.innerHTML = description;
+
+                let todoOther = document.createElement("div");
+                todoOther.setAttribute("class", "todoOther");
+
+
+
+
+                let choice = document.createElement("select");
+                choice.setAttribute("class", "choice");
+
+                let option1 = document.createElement("option");
+                option1.innerHTML = "Low";
+                option1.setAttribute("class", "options");
+                option1.setAttribute("value", "Low");
+
+                let option2 = document.createElement("option");
+                option2.innerHTML = "Medium";
+                option2.setAttribute("class", "options");
+                option2.setAttribute("value", "Medium");
+
+                let option3 = document.createElement("option");
+                option3.innerHTML = "Urgent";
+                option3.setAttribute("class", "options");
+                option3.setAttribute("value", "Urgent");
+
+
+                let todoTime = document.createElement("div");
+                todoTime.setAttribute("class", "todoTime");
+
+                // Get current time
+                let currentTime = new Date();
+
+                // Function to calculate time ago
+                function getTimeago(currentTime) {
+                    let now = new Date();
+                    let difference = Math.floor((now - currentTime) / 1000); // difference in seconds
+                    if (difference < 60) {
+                        return `${difference} seconds ago`;
+                    } else if (difference < 3600) {
+                        let minutes = Math.floor(difference / 60);
+                        return `${minutes} ${minutes > 1 ? 'minutes' : 'minute'} ago`;
+                    } else if (difference < 86400) {
+                        let hours = Math.floor(difference / 3600);
+                        return `${hours} ${hours > 1 ? 'hours' : 'hour'} ago`;
+                    } else {
+                        let days = Math.floor(difference / 86400);
+                        return `${days} ${days > 1 ? 'days' : 'day'} ago`;
+                    }
+
+                }
+
+                todoTime.innerHTML = getTimeago(currentTime);
+                setInterval(() => {
+                    todoTime.innerHTML = getTimeago(currentTime);
+
+                }, 60000);
+
+
+
+
+
+
+                let todoDelete = document.createElement("img");
+                todoDelete.setAttribute("class", "todoDelete");
+                todoDelete.setAttribute("src", "https://img.icons8.com/?size=256&id=102350&format=png");
+                todoDelete.setAttribute("alt", "delete Image");
+
+
+
+
+
+                
+                let todoCard = e.parentElement.children[1];
+                
+                todoCard.appendChild(actualTodosHere);
+
+                actualTodosHere.appendChild(todoTitle);
+                todoTitle.appendChild(h2Title);
+                todoTitle.appendChild(editImg);
+
+                actualTodosHere.appendChild(todoDescription);
+
+                actualTodosHere.appendChild(todoOther);
+                todoOther.appendChild(choice);
+                choice.appendChild(option1);
+                choice.appendChild(option2);
+                choice.appendChild(option3);
+                todoOther.appendChild(todoTime);
+                todoOther.appendChild(todoDelete);
+
+
+
+
+                // Add a slight delay to trigger the animation
+                setTimeout(() => {
+                    actualTodosHere.style.transform = "scale(1.05)";
+                    actualTodosHere.style.backgroundColor = "#d4fcb8";
+                }, 10);
+
+                // Reset the transformation after the animation
+                setTimeout(() => {
+                    actualTodosHere.style.transform = "scale(1)";
+                    actualTodosHere.style.backgroundColor = "#f0ffe2";
+                }, 300);
+
+
+
+
+
+
+
+                // change the color of choices between green, yellow & red
+                document.querySelectorAll(".choice").forEach((selector) => {
+
+                    selector.addEventListener('change', (event) => {
+                        const value = event.target.value;
+
+                        // Remove all previous difficulty classes
+                        selector.classList.remove('low', 'medium', 'urgent');
+
+                        // Add class based on selected value
+                        if (value === 'Low') {
+                            selector.classList.add('low');
+                        } else if (value === 'Medium') {
+                            selector.classList.add('medium');
+                        } else if (value === 'Urgent') {
+                            selector.classList.add('urgent');
+                        }
+                    });
+
+                    // Set the initial state
+                    selector.dispatchEvent(new Event('change'));
+                });
+
+
+
+
+
+
+
+
+
+
+            }
+        }) 
+    })
+
+
+
+
+
+
+
+
+
+
+
+        // change the color of choices between green, yellow & red for without addEventListner
+        document.querySelectorAll(".choice").forEach((selector) => {
+
+            selector.addEventListener('change', (event) => {
+                const value = event.target.value;
+
+                // Remove all previous difficulty classes
+                selector.classList.remove('low', 'medium', 'urgent');
+
+                // Add class based on selected value
+                if (value === 'Low') {
+                    selector.classList.add('low');
+                } else if (value === 'Medium') {
+                    selector.classList.add('medium');
+                } else if (value === 'Urgent') {
+                    selector.classList.add('urgent');
+                }
+            });
+
+            // Set the initial state
+            selector.dispatchEvent(new Event('change'));
+        });
+
+
+
+
+
+
+
+
+        // Lets Make Edit Button
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.classList.contains('editImg')) {
+
+                let editedTitle = prompt("Enter Title to Edit");
+                let editedDescription = prompt("Enter Description to Edit");
+
+                if (editedTitle == "" || editedDescription == "") {
+                    alert("please enter title & description to edit");
+
+                } else {
+                    e.target.parentElement.children[0].innerHTML = editedTitle;
+                    e.target.parentElement.parentElement.children[1].innerHTML = editedDescription
+
+
+                    // Get current time
+                    let currentEditedTime = new Date();
+
+                    // Function to calculate time ago
+                    function getTimeago(currentEditedTime) {
+                        let now = new Date();
+                        let difference = Math.floor((now - currentEditedTime) / 1000); // difference in seconds
+                        if (difference < 60) {
+                            return `${difference} seconds ago`;
+                        } else if (difference < 3600) {
+                            let minutes = Math.floor(difference / 60);
+                            return `${minutes} ${minutes > 1 ? 'minutes' : 'minute'} ago`;
+                        } else if (difference < 86400) {
+                            let hours = Math.floor(difference / 3600);
+                            return `${hours} ${hours > 1 ? 'hours' : 'hour'} ago`;
+                        } else {
+                            let days = Math.floor(difference / 86400);
+                            return `${days} ${days > 1 ? 'days' : 'day'} ago`;
+                        }
+
+                    }
+
+                    e.target.parentElement.parentElement.children[2].children[1].innerHTML = getTimeago(currentEditedTime);
+                    setInterval(() => {
+                        e.target.parentElement.parentElement.children[2].children[1].innerHTML = getTimeago(currentEditedTime);
+
+                    }, 60000);
+
+
+                }
+            }
+        });
+
+
+        // Lets Make Delete Button
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.classList.contains('todoDelete')) {
+                let todoItem = e.target.closest(".actualTodosHere"); // Select the parent todo item
+
+                if (todoItem) {
+                    // Add fade-out effect
+                    todoItem.style.transition = "opacity 0.5s, transform 0.5s";
+                    todoItem.style.opacity = "0";
+                    todoItem.style.transform = "translateY(-10px)"; // Move slightly up
+
+                    // Remove the item after animation ends
+                    setTimeout(() => {
+                        todoItem.remove();
+                    }, 500); // Wait for the animation to complete
+                }
+            }
+        });
+
+
+        // Lets Add drag-drop Functionality
+        let box1 = document.getElementById("box-1");
+        let box2 = document.getElementById("box-2");
+        let box3 = document.getElementById("box-3");
+        let box4 = document.getElementById("box-4");
+        document.addEventListener('dragstart', function (e) {
+            if (e.target && e.target.classList.contains('actualTodosHere')) {
+                let selected = e.target;
+                
+                box1.addEventListener("dragover", (e) => {
+                    e.preventDefault();
+                });
+
+                box1.addEventListener("drop", () => {
+                    box1.appendChild(selected);
+                    selected = null;
+                });
+
+
+
+                box2.addEventListener("dragover", (e) => {
+                    e.preventDefault();
+                });
+
+                box2.addEventListener("drop", () => {
+                    box2.appendChild(selected);
+                    selected = null;
+                });
+
+
+
+                box3.addEventListener("dragover", (e) => {
+                    e.preventDefault();
+                });
+
+                box3.addEventListener("drop", () => {
+                    box3.appendChild(selected);
+                    selected = null;
+                });
+
+
+
+                box4.addEventListener("dragover", (e) => {
+                    e.preventDefault();
+                });
+
+                box4.addEventListener("drop", () => {
+                    box4.appendChild(selected);
+                    selected = null;
+                });
+
+            }
+        })
+        
+
+
+
+    </script>
+</body>
+
+</html>
